@@ -14,7 +14,7 @@ namespace SharedGolfClasses
         public int CourseId { get; set; }
         public string? ClubName { get; set; }
         public string? CourseName { get; set; } 
-        public Tees Tees { get; set; }
+        public Tees? Tees { get; set; }
 
 
 
