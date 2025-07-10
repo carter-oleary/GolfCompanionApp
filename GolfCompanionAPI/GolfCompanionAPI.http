@@ -1,5 +1,12 @@
 @GolfCompanionAPI_HostAddress = http://localhost:5189
 
-GET {{GolfCompanionAPI_HostAddress}}/api/golfcourse/20103
+
+GET {{GolfCompanionAPI_HostAddress}}/api/golfcourse/search?search_query=Bethpage
 Accept: application/json
 ###
+
+GET {{GolfCompanionAPI_HostAddress}}/api/golfcourse/course?id=20103
+Accept: application/json
+###
+
+

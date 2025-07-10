@@ -2,6 +2,7 @@
 using GolfCompanionAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SharedGolfClasses;
 
 namespace GolfCompanionAPI.Controllers
 {
@@ -12,9 +13,14 @@ namespace GolfCompanionAPI.Controllers
         private readonly GolfCourseService _courseSvc;
         public GolfCourseController(GolfCourseService crsSvc) => _courseSvc = crsSvc;
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> Get(int id) =>
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Course>>> Search([FromQuery] string? search_query) =>
+            Ok(await _courseSvc.SearchGolfCoursesAsync(search_query));
+
+        [HttpGet("course")]
+        public async Task<ActionResult<Course>> Get([FromQuery] int? id) =>
             Ok(await _courseSvc.GetGolfCourseAsync(id));
 
+        
     }
 }

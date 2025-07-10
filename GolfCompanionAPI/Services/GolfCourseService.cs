@@ -26,34 +26,93 @@ namespace GolfCompanionAPI.Services
 
         }
 
-        public async Task<GolfCourse?> GetGolfCourseAsync(int id) 
+        public async Task<GolfCourse?> GetGolfCourseAsync(int? id) 
         {
-            Console.WriteLine(_settings.BaseUrl + $"courses/{id}");
-            var response = await _httpClient.GetAsync($"courses/{id}");
-            response.EnsureSuccessStatusCode();
+            if (id == null)
+            {
+                Console.WriteLine("ID is null");
+                return null;
+            }
 
-            var jsonStr = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(jsonStr);
+            Console.WriteLine($"Getting course with ID: {id}");
+            Console.WriteLine($"Full URL: {_settings.BaseUrl}courses/{id}");
+            
             try
             {
+                var response = await _httpClient.GetAsync($"courses/{id}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonStr = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Course Response JSON: {jsonStr}");
+                Console.WriteLine($"JSON Length: {jsonStr.Length}");
+                
                 var courseWrapper = System.Text.Json.JsonSerializer.Deserialize<CourseWrapper>(jsonStr, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
-                if (courseWrapper != null)
+                
+                if (courseWrapper?.Course != null)
                 {
                     var course = courseWrapper.Course;
                     Console.WriteLine($"Course Info: {course.ToString()}");
                     return course.ToGolfCourse();
                 }
-                else return null;
+                else 
+                {
+                    Console.WriteLine("Course wrapper or course is null");
+                    return null;
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Error getting course {id}: {ex.Message}");
+                Console.WriteLine($"Error Type: {ex.GetType().Name}");
                 return null;
             }
-            
+        }
+
+        public async Task<IEnumerable<GolfCourse>> SearchGolfCoursesAsync(string? name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Search query is null or empty");
+                return new List<GolfCourse>();
+            }
+
+            string query = $"search?search_query={Uri.EscapeDataString(name)}";
+            Console.WriteLine($"Search URL: {_settings.BaseUrl}{query}");
+
+            try
+            {
+                var response = await _httpClient.GetAsync($"search?search_query={Uri.EscapeDataString(name)}");
+                response.EnsureSuccessStatusCode();
+                
+                var jsonStr = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Search Response JSON: {jsonStr}");
+                Console.WriteLine($"JSON Length: {jsonStr.Length}");
+
+                var searchResponse = System.Text.Json.JsonSerializer.Deserialize<SearchResponseWrapper>(jsonStr, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (searchResponse?.Courses != null)
+                {
+                    Console.WriteLine($"Found {searchResponse.Courses.Count} courses in response");
+                    return searchResponse.Courses.Select(c => c.ToGolfCourse());
+                }
+                else
+                {
+                    Console.WriteLine("No courses found in response or null response");
+                    return new List<GolfCourse>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Search Error: {ex.Message}");
+                Console.WriteLine($"Error Type: {ex.GetType().Name}");
+                return new List<GolfCourse>();
+            }
         }
 
     }
@@ -62,6 +121,12 @@ namespace GolfCompanionAPI.Services
     public class CourseWrapper
     {
         public required Course Course { get; set; }
+    }
+
+    // Wrapper class for search response
+    public class SearchResponseWrapper
+    {
+        public List<Course>? Courses { get; set; }
     }
 
 }

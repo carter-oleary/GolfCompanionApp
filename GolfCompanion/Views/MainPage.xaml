@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:GolfCompanion.Models"
+             xmlns:shared="clr-namespace:SharedGolfClasses;assembly=SharedGolfClasses"
+             xmlns:viewmodels="clr-namespace:GolfCompanion.ViewModels"
+             x:DataType="viewmodels:SearchViewModel"    
+             x:Class="GolfCompanion.Views.SearchPage">
+
+    <ContentPage.Resources>
+        <models:InverseBoolConverter x:Key="InverseBoolConverter" />
+        <models:StringToBoolConverter x:Key="StringToBoolConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <Label Text="Golf Course Search" 
+                   Style="{StaticResource Headline}"
+                   HorizontalOptions="Center" />
+            
+            <!-- Search Bar -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry x:Name="SearchEntry" 
+                       Placeholder="Enter golf course name..."
+                       Text="{Binding SearchText}"
+                       Grid.Column="0"
+                       Margin="0,0,10,0" />
+                <Button Text="Search" Style="{StaticResource ActionButton}"
+                        Command="{Binding SearchCommand}"
+                        Grid.Column="1"
+                        IsEnabled="{Binding IsSearching, Converter={StaticResource InverseBoolConverter}}" />
+            </Grid>
+        </VerticalStackLayout>
+
+        <!-- Results List -->
+        <CollectionView Grid.Row="1" 
+                       ItemsSource="{Binding SearchResults}"
+                       Margin="0,20,0,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="shared:GolfCourse">
+                    <Border Style="{StaticResource ListBorder}">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0" Spacing="5" Margin="5">
+                                <Label Text="{Binding ClubName}" FontAttributes="Bold" />
+                                <Label Text="{Binding CourseName}" TextColor="White" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Select" Style="{StaticResource ActionButton}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectCourseCommand}" 
+                                    CommandParameter="{Binding}" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    
+                  
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="1" 
+                          IsRunning="{Binding IsSearching}"
+                          IsVisible="{Binding IsSearching}"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center" />
+
+        <!-- Status Message -->
+        <Label Grid.Row="2" 
+               Text="{Binding StatusMessage}"
+               HorizontalOptions="Center"
+               Margin="0,10,0,0"
+               IsVisible="{Binding StatusMessage, Converter={StaticResource StringToBoolConverter}}" />
+    </Grid>
+
+</ContentPage>

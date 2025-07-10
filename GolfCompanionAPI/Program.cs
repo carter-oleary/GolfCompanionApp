@@ -1,5 +1,6 @@
 using GolfCompanionAPI.Models;
 using GolfCompanionAPI.Services;
+using SharedGolfClasses;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,18 @@ builder.Services.Configure<GolfCourseApiSettings>(
 builder.Services.AddHttpClient<GolfCourseService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
 
@@ -22,6 +35,8 @@ var app = builder.Build();
 //}
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 
