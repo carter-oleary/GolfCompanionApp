@@ -9,6 +9,11 @@
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate views:SearchPage}"
-        Route="MainPage" />
+        Route="SearchPage" />
+
+    <ShellContent
+        Title="Tee Selection"
+        ContentTemplate="{DataTemplate views:TeeSelectionDialog}"
+        Route="TeeSelectionDialog" />
 
 </Shell>

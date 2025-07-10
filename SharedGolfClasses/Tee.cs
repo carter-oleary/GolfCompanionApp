@@ -18,6 +18,6 @@
         public double Back_Bogey_Rating { get; set; }
         public Hole[]? Holes { get; set; }
 
-        public string DisplayName => $"{Tee_Name}: {Course_Rating}/{Slope_Rating}, {Total_Yards} yds";
+        public string DisplayName => $"{Course_Rating}/{Slope_Rating}, {Total_Yards} yds";
     }
 }

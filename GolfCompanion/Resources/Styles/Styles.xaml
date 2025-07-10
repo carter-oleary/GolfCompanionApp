@@ -10,6 +10,20 @@
         <Setter Property="Padding" Value="5"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="ListHeaderLabel">
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="ListSubLabel">
+        <Setter Property="TextColor" Value="White"/>
+    </Style>
+
+    <Style TargetType="VerticalStackLayout" x:Key="ListVSL">
+        <Setter Property="Spacing" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+
     <Style TargetType="Border" x:Key="ListBorder">
         <Setter Property="BackgroundColor" Value="ForestGreen"/>
         <Setter Property="StrokeShape" Value="5"/>
@@ -22,6 +36,7 @@
         <Setter Property="TextColor" Value="White"/>
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Padding" Value="1"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
     
     <Style TargetType="ActivityIndicator">

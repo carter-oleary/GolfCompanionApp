@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:GolfCompanion.ViewModels"
+             xmlns:shared="clr-namespace:SharedGolfClasses;assembly=SharedGolfClasses"
+             x:Class="GolfCompanion.Views.TeeSelectionDialog"
+             x:DataType="viewmodels:TeeSelectionViewModel"
+             Title="Select Tee">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="20">
+        <!-- Course Info -->
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <Label Text="{Binding CourseName}" 
+                   Style="{StaticResource Headline}"
+                   HorizontalOptions="Center" />
+            <Label Text="{Binding ClubName}" 
+                   Style="{StaticResource SubHeadline}"
+                   HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- Gender Selection -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*" Margin="0,20,0,10">
+            <Label Text="Gender:" 
+                   Grid.Column="0"
+                   VerticalOptions="Center" />
+            <Picker Grid.Column="1" 
+                    ItemsSource="{Binding GenderOptions}"
+                    SelectedItem="{Binding SelectedGender}"
+                    WidthRequest="120" />
+        </Grid>
+
+        <!-- Tees List -->
+        <CollectionView Grid.Row="2" 
+                       ItemsSource="{Binding AvailableTees}"
+                       Margin="0,10,0,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="shared:Tee">
+                    <Border Style="{StaticResource ListBorder}">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0" Style="{StaticResource ListVSL}">
+                                <Label Text="{Binding Tee_Name}" Style="{StaticResource ListHeaderLabel}"/>
+                                <Label Text="{Binding DisplayName}" Style="{StaticResource ListSubLabel}" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Select" Style="{StaticResource ActionButton}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectTeeCommand}"
+                                    CommandParameter="{Binding}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Close Button -->
+        <Button Grid.Row="3" 
+                Text="Cancel"
+                Command="{Binding CancelCommand}"
+                Margin="0,20,0,0"
+                HorizontalOptions="Center" />
+    </Grid>
+
+</ContentPage> 

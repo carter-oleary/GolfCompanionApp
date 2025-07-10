@@ -41,13 +41,13 @@
                 <DataTemplate x:DataType="shared:GolfCourse">
                     <Border Style="{StaticResource ListBorder}">
                         <Grid ColumnDefinitions="*,Auto">
-                            <VerticalStackLayout Grid.Column="0" Spacing="5" Margin="5">
-                                <Label Text="{Binding ClubName}" FontAttributes="Bold" />
-                                <Label Text="{Binding CourseName}" TextColor="White" />
+                            <VerticalStackLayout Grid.Column="0" Style="{StaticResource ListVSL}">
+                                <Label Text="{Binding ClubName}" Style="{StaticResource ListHeaderLabel}"/>
+                                <Label Text="{Binding CourseName}" Style="{StaticResource ListSubLabel}"/>
                             </VerticalStackLayout>
                             <Button Grid.Column="1" Text="Select" Style="{StaticResource ActionButton}"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectCourseCommand}" 
-                                    CommandParameter="{Binding}" VerticalOptions="Center" />
+                                    CommandParameter="{Binding}" />
                         </Grid>
                     </Border>
                     

@@ -70,4 +70,10 @@
 		<ProjectReference Include="..\SharedGolfClasses\SharedGolfClasses.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Views\SearchPage.xaml.cs">
+	    <DependentUpon>SearchPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 </Project>

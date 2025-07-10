@@ -7,6 +7,6 @@ namespace SharedGolfClasses
     {
         public required int Par { get; set; }
         public required int Yardage { get; set; }
-        public required int Handicap { get; set; }
+        public int? Handicap { get; set; } 
     }
 }

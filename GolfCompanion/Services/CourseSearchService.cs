@@ -22,21 +22,35 @@ namespace GolfCompanion.Services
             try
             {
                 var url = $"http://localhost:5189/api/golfcourse/search?search_query={Uri.EscapeDataString(searchQuery)}";
+                Console.WriteLine($"Searching courses with URL: {url}");
+                Console.WriteLine($"Original search query: '{searchQuery}'");
+                Console.WriteLine($"Escaped search query: '{Uri.EscapeDataString(searchQuery)}'");
+                
                 var response = await _httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
+                Console.WriteLine($"Search response status: {response.StatusCode}");
                 
                 if (response.IsSuccessStatusCode)
                 {
+                    var jsonContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Search response JSON: {jsonContent}");
+                    
                     var courses = await response.Content.ReadFromJsonAsync<IEnumerable<GolfCourse>>();
-                    return courses ?? new List<GolfCourse>();
+                    var courseList = courses?.ToList() ?? new List<GolfCourse>();
+                    Console.WriteLine($"Found {courseList.Count} courses");
+                    return courseList;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Search error response: {errorContent}");
                 }
                 
                 return new List<GolfCourse>();
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it appropriately
                 Console.WriteLine($"Error searching courses: {ex.Message}");
+                Console.WriteLine($"Error type: {ex.GetType().Name}");
                 return new List<GolfCourse>();
             }
         }

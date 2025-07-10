@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SharedGolfClasses;
 using System.Collections.ObjectModel;
 using GolfCompanion.Services;
+using GolfCompanion.Views;
 
 namespace GolfCompanion.ViewModels
 {
@@ -21,10 +22,12 @@ namespace GolfCompanion.ViewModels
         private string statusMessage = string.Empty;
 
         private readonly CourseSearchService _courseSearchService;
+        private readonly CourseDetailService _courseDetailService;
 
-        public SearchViewModel(CourseSearchService courseSearchService)
+        public SearchViewModel(CourseSearchService courseSearchService, CourseDetailService courseDetailService)
         {
             _courseSearchService = courseSearchService;
+            _courseDetailService = courseDetailService;
         }
 
         [RelayCommand]
@@ -68,10 +71,30 @@ namespace GolfCompanion.ViewModels
         }
 
         [RelayCommand]
-        private void SelectCourse(GolfCourse course)
+        private async Task SelectCourse(GolfCourse course)
         {
-            // Handle course selection - you can navigate to a detail page or store the selection
-            StatusMessage = $"Selected: {course.ClubName} - {course.CourseName}";
+            try
+            {
+                // Get detailed course information including tees
+                var detailedCourse = await _courseDetailService.GetCourseDetailsAsync(course.CourseId);
+                
+                if (detailedCourse != null)
+                {
+                    // Store the course in the selection service
+                    CourseSelectionService.SetSelectedCourse(detailedCourse);
+                    
+                    // Navigate to TeeSelectionDialog using absolute routing
+                    await Shell.Current.GoToAsync("//TeeSelectionDialog");
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", "Could not load course details", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Error loading course details: {ex.Message}", "OK");
+            }
         }
     }
 } 

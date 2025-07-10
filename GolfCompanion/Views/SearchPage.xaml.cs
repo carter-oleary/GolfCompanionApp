@@ -9,7 +9,8 @@ namespace GolfCompanion.Views
         {
             InitializeComponent();
             var courseSearchService = new CourseSearchService();
-            BindingContext = new SearchViewModel(courseSearchService);
+            var courseDetailService = new CourseDetailService();
+            BindingContext = new SearchViewModel(courseSearchService, courseDetailService);
         }
     }
 } 
