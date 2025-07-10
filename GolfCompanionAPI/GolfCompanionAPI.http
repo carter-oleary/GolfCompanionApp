@@ -1,0 +1,5 @@
+@GolfCompanionAPI_HostAddress = http://localhost:5189
+
+GET {{GolfCompanionAPI_HostAddress}}/api/golfcourse/20103
+Accept: application/json
+###
