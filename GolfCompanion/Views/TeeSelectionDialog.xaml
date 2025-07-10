@@ -51,11 +51,7 @@
         </CollectionView>
 
         <!-- Close Button -->
-        <Button Grid.Row="3" 
-                Text="Cancel"
-                Command="{Binding CancelCommand}"
-                Margin="0,20,0,0"
-                HorizontalOptions="Center" />
+        <Button Grid.Row="3" Text="Cancel" Command="{Binding CancelCommand}" Style="{StaticResource ActionButton}"/>
     </Grid>
 
 </ContentPage> 
