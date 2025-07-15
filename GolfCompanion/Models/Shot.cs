@@ -6,6 +6,14 @@ namespace GolfCompanion.Models
     public enum ShotType {
         Tee, Layup, Approach, Recovery, Chip, Putt 
     }
+    public enum Lie
+    {
+        Tee, Fairway, Rough, Bunker, Penalty, Green
+    }
+    public enum Result
+    {
+        Left, Right, Short, Long, OnTarget
+    }
     public class Shot
     {
         [Key]
@@ -27,9 +35,9 @@ namespace GolfCompanion.Models
         
         public required int Distance { get; set; }
         
-        public string Lie { get; set; } = string.Empty;
+        public Lie Lie { get; set; } 
         
-        public string Result { get; set; } = string.Empty;
+        public Result Result { get; set; } 
         
         public double StrokesGained { get; set; }
         

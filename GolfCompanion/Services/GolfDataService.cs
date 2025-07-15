@@ -9,9 +9,9 @@ namespace GolfCompanion.Services
     {
         private readonly GolfDbContext _context;
 
-        public GolfDataService()
+        public GolfDataService(GolfDbContext context)
         {
-            _context = new GolfDbContext(new DbContextOptions<GolfDbContext>());
+            _context = context;
         }
 
         public async Task SaveCourseAndTeesAsync(GolfCourse golfCourse)

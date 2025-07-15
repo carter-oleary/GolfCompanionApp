@@ -1,16 +1,21 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:GolfCompanion.ViewModels" 
              xmlns:models="clr-namespace:GolfCompanion.Models"
              x:DataType="vm:ShotInputViewModel"
              x:Class="GolfCompanion.Views.ShotInputDialog">
     <VerticalStackLayout Padding="20" Spacing="16">
         <Label Text="Shot Input" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
-        <Entry Placeholder="Shot Type (placeholder)" />
+        <Entry Placeholder="Distance From Hole (yds)" />
+        <Picker Title="Club" ItemsSource="{Binding Clubs}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedClub}" />
+        <Picker Title="Shot Type" ItemsSource="{Binding ShotTypes}"/>
+        <Picker Title="Lie" ItemsSource="{Binding Lies}"/>
+        <Picker Title="Result" ItemsSource="{Binding Results}"/>
         <!-- Add more placeholder fields as needed -->
         <HorizontalStackLayout Spacing="16" HorizontalOptions="Center">
-            <Button Text="Save" x:Name="SaveButton" Command="{Binding AddShotCommand}"/>
-            <Button Text="Cancel" x:Name="CancelButton" Command="{Binding CancelShotCommand}"/>
+            <Button Text="Save" Style="{StaticResource ActionButton}" x:Name="SaveButton" Command="{Binding AddShotCommand}"/>
+            <Button Text="Cancel" Style="{StaticResource ActionButton}" x:Name="CancelButton" Command="{Binding CancelShotCommand}"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
-</ContentPage> 
+</toolkit:Popup> 

@@ -6,6 +6,9 @@ using GolfCompanion.Services;
 using SharedGolfClasses;
 using GolfCompanion.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
+using CommunityToolkit.Maui.Views;
+using GolfCompanion.Views;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace GolfCompanion.ViewModels
 {
@@ -23,11 +26,11 @@ namespace GolfCompanion.ViewModels
         private readonly ShotInputService _shotInputService;
         private readonly GolfDataService _golfDataService;
 
-        public RoundInputViewModel()
+        public RoundInputViewModel(GolfDataService gds, ShotInputService sis)
         {
             _courseId = CourseSelectionService.GetSelectedCourse().CourseId;
-            _golfDataService = new GolfDataService();
-            _shotInputService = new ShotInputService();
+            _golfDataService = gds;
+            _shotInputService = sis;
             _selectedTee = TeeSelectionService.GetSelectedTee();
             var tee = _golfDataService.GetTeeFromDatabaseAsync(_courseId, _gender, _selectedTee.Tee_Name).Result;
             if (tee == null) return;
@@ -48,7 +51,8 @@ namespace GolfCompanion.ViewModels
             // Open modal dialog for shot input (to be implemented)
             // On dialog result, add to SelectedHole.Shots
             ShotInputService.SetSelectedHole(SelectedHole);
-            await Shell.Current.GoToAsync("//ShotInputDialog");
+            WeakReferenceMessenger.Default.Send(new ShowShotInputPopupMessage(SelectedHole));
+
         }
 
         [RelayCommand]
@@ -57,6 +61,15 @@ namespace GolfCompanion.ViewModels
             // Persist all shots and round to database (to be implemented)
             // Navigate back to search view
             await Shell.Current.GoToAsync("//SearchView");
+        }
+
+    }
+    public class ShowShotInputPopupMessage
+    {
+        public Models.Hole selectedHole { get; }
+        public ShowShotInputPopupMessage(Models.Hole selectedHole)
+        {
+            this.selectedHole = selectedHole;
         }
     }
 
