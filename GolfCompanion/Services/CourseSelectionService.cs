@@ -6,6 +6,8 @@ namespace GolfCompanion.Services
     {
         private static GolfCourse? _selectedCourse;
 
+        public static void Clear() => _selectedCourse = null;
+
         public static void SetSelectedCourse(GolfCourse course)
         {
             _selectedCourse = course;
@@ -14,7 +16,6 @@ namespace GolfCompanion.Services
         public static GolfCourse? GetSelectedCourse()
         {
             var course = _selectedCourse;
-            _selectedCourse = null; // Clear after getting
             return course;
         }
     }

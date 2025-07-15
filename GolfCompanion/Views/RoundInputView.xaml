@@ -1,0 +1,35 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GolfCompanion.ViewModels"
+             xmlns:models="clr-namespace:GolfCompanion.Models"
+             x:Class="GolfCompanion.Views.RoundInputView">
+    
+    <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,*,Auto" Margin="10" ColumnSpacing="5" RowSpacing="5">
+        <!-- Hole Picker and Info -->
+        <Picker Title="Select Hole"
+                ItemsSource="{Binding Holes}"
+                ItemDisplayBinding="{Binding DisplayText}"
+                SelectedItem="{Binding SelectedHole, Mode=TwoWay}" />
+        <Label Grid.Column="1" Style="{StaticResource InfoLabel}" Text="{Binding SelectedHole.Par, StringFormat='Par {0}'}"/>
+        <Label Grid.Column="2" Style="{StaticResource InfoLabel}" Text="{Binding SelectedHole.Length, StringFormat='Length: {0} yds'}"/>
+        <Label Grid.Column="3" Style="{StaticResource InfoLabel}" Text="{Binding SelectedHole.Handicap, StringFormat='Handicap {0}'}"/>
+        <!-- Shots List -->
+        <CollectionView Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding SelectedHole.Shots}" HeightRequest="200">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Shot">
+                    <Frame Margin="4" Padding="8" BorderColor="Gray">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Display}" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Add Shot Button -->
+        <Button Grid.Column="1" Grid.Row="2" Text="Add Shot" Style="{StaticResource ActionButton}" Clicked="OnAddShotClicked" />
+
+        <!-- Save Round Button -->
+        <Button Grid.Row="2" Grid.Column="2" Text="Save Round" Style="{StaticResource ActionButton}" Clicked="OnSaveRoundClicked" />
+    </Grid>
+</ContentPage> 

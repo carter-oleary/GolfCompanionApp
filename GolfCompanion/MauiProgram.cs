@@ -28,19 +28,23 @@ public static class MauiProgram
 		builder.Services.AddScoped<GolfDataService>();
 		builder.Services.AddSingleton<CourseDetailService>();
         builder.Services.AddSingleton<CourseSearchService>();
+		builder.Services.AddSingleton<TeeSelectionService>();
 
-		// Register ViewModels
-		builder.Services.AddTransient<SearchViewModel>();
+        // Register ViewModels
+        builder.Services.AddTransient<SearchViewModel>();
 		builder.Services.AddTransient<TeeSelectionViewModel>();
+		builder.Services.AddTransient<RoundInputViewModel>();
 
-		// Register Views
-		builder.Services.AddTransient<SearchPage>();
+        // Register Views
+        builder.Services.AddTransient<SearchPage>();
 		builder.Services.AddTransient<TeeSelectionDialog>();
+		builder.Services.AddTransient<RoundInputView>();
+		builder.Services.AddTransient<ShotInputDialog>();
 
-		
+
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
 		return builder.Build();
