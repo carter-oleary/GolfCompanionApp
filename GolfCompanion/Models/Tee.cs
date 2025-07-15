@@ -10,7 +10,7 @@ namespace GolfCompanion.Models
         
         [ForeignKey("Course")]
         public int CourseId { get; set; }
-        public Course Course { get; set; }
+        public Course? Course { get; set; }
         
         public string Gender { get; set; } = string.Empty;
         

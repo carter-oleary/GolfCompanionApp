@@ -41,9 +41,8 @@
                                 <Label Text="{Binding Tee_Name}" Style="{StaticResource ListHeaderLabel}"/>
                                 <Label Text="{Binding DisplayName}" Style="{StaticResource ListSubLabel}" />
                             </VerticalStackLayout>
-                            <Button Grid.Column="1" Text="Select" Style="{StaticResource ActionButton}"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectTeeCommand}"
-                                    CommandParameter="{Binding}"/>
+                            <Button Grid.Column="1" Text="Select" Style="{StaticResource ActionButton}" CommandParameter="{Binding .}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectTeeCommand}" />
                         </Grid>
                     </Border>
                 </DataTemplate>

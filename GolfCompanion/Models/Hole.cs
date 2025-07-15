@@ -10,7 +10,7 @@ namespace GolfCompanion.Models
         
         [ForeignKey("Tee")]
         public int TeeId { get; set; }
-        public Tee Tee { get; set; }
+        public Tee? Tee { get; set; }
         
         [Range(1, 18)]
         public int HoleNumber { get; set; }

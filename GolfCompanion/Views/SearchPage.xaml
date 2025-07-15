@@ -5,7 +5,8 @@
              xmlns:shared="clr-namespace:SharedGolfClasses;assembly=SharedGolfClasses"
              xmlns:viewmodels="clr-namespace:GolfCompanion.ViewModels"
              x:DataType="viewmodels:SearchViewModel"    
-             x:Class="GolfCompanion.Views.SearchPage">
+             x:Class="GolfCompanion.Views.SearchPage"
+             x:Name="SearchPageRoot">
 
     <ContentPage.Resources>
         <models:InverseBoolConverter x:Key="InverseBoolConverter" />
@@ -34,9 +35,7 @@
         </VerticalStackLayout>
 
         <!-- Results List -->
-        <CollectionView Grid.Row="1" 
-                       ItemsSource="{Binding SearchResults}"
-                       Margin="0,20,0,0">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding SearchResults}" Margin="0,20,0,0">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="shared:GolfCourse">
                     <Border Style="{StaticResource ListBorder}">
@@ -45,9 +44,8 @@
                                 <Label Text="{Binding ClubName}" Style="{StaticResource ListHeaderLabel}"/>
                                 <Label Text="{Binding CourseName}" Style="{StaticResource ListSubLabel}"/>
                             </VerticalStackLayout>
-                            <Button Grid.Column="1" Text="Select" Style="{StaticResource ActionButton}"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectCourseCommand}" 
-                                    CommandParameter="{Binding}" />
+                            <Button Grid.Column="1" Text="Select" Style="{StaticResource ActionButton}" CommandParameter="{Binding .}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectCourseCommand}"/>
                         </Grid>
                     </Border>
                     
