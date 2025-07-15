@@ -1,5 +1,6 @@
 ﻿namespace GolfCompanion;
 using GolfCompanion.Views;
+using CommunityToolkit.Maui;
 
 public partial class AppShell : Shell
 {

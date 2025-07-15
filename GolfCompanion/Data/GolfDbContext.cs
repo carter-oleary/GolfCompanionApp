@@ -18,6 +18,39 @@ namespace GolfCompanion.Data
         public DbSet<Hole> Holes { get; set; }
         public DbSet<Shot> Shots { get; set; }
 
+        private User GetUser()
+        {
+            return new User
+            {
+                UserId = 1, // Default user for testing purposes
+                Email = "john_doe@fake.email",
+                FirstName = "John",
+                LastName = "Doe",
+                Handicap = 15
+            };
+        }
+
+        private Club[] GetClubs()
+        {
+            return new Club[]
+            {
+                new Club { ClubId = 1, UserId = 1, ClubName = "Dr", ClubDistance = 270 },
+                new Club { ClubId = 2, UserId = 1, ClubName = "3w", ClubDistance = 240 },
+                new Club { ClubId = 3, UserId = 1, ClubName = "4h", ClubDistance = 220 },
+                new Club { ClubId = 4, UserId = 1, ClubName = "5i", ClubDistance = 205 },
+                new Club { ClubId = 5, UserId = 1, ClubName = "6i", ClubDistance = 195 },
+                new Club { ClubId = 6, UserId = 1, ClubName = "7i", ClubDistance = 180 },
+                new Club { ClubId = 7, UserId = 1, ClubName = "8i", ClubDistance = 165 },
+                new Club { ClubId = 8, UserId = 1, ClubName = "9i", ClubDistance = 150 },
+                new Club { ClubId = 9, UserId = 1, ClubName = "Pw", ClubDistance = 135 },
+                new Club { ClubId = 10, UserId = 1, ClubName = "Gw", ClubDistance = 125 },
+                new Club { ClubId = 11, UserId = 1, ClubName = "Aw", ClubDistance = 115 },
+                new Club { ClubId = 12, UserId = 1, ClubName = "Sw", ClubDistance = 105 },
+                new Club { ClubId = 13, UserId = 1, ClubName = "Lw", ClubDistance = 95 },
+                new Club { ClubId = 14, UserId = 1, ClubName = "Pu", ClubDistance = 0 }
+            };
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -29,8 +62,6 @@ namespace GolfCompanion.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             // Configure relationships and constraints
             modelBuilder.Entity<Club>()
                 .HasOne(c => c.User)
@@ -84,6 +115,22 @@ namespace GolfCompanion.Data
             modelBuilder.Entity<Shot>()
                 .Property(s => s.ShotType)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<Shot>()
+                .Property(s => s.Result)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Shot>()
+                .Property(s => s.Lie)
+                .HasConversion<string>();
+
+            // Seed initial data
+            modelBuilder.Entity<User>().HasData(GetUser());
+            modelBuilder.Entity<Club>().HasData(GetClubs());
+
+            base.OnModelCreating(modelBuilder);
+
+
         }
     }
 } 

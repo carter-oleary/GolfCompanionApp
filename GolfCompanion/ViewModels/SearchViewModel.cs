@@ -26,12 +26,12 @@ namespace GolfCompanion.ViewModels
         [ObservableProperty]
         private string statusMessage = string.Empty;
 
-        public SearchViewModel()
+        public SearchViewModel(CourseSearchService css, CourseDetailService cds, CourseSelectionService crssel, GolfDataService gds)
         {
-            _courseSearchService = new CourseSearchService();
-            _courseDetailService = new CourseDetailService();
-            _courseSelectionService = new CourseSelectionService();
-            _golfDataService = new GolfDataService();
+            _courseSearchService = css;
+            _courseDetailService = cds;
+            _courseSelectionService = crssel;
+            _golfDataService = gds;
         }
 
         [RelayCommand]
