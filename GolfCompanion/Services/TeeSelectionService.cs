@@ -10,7 +10,6 @@ namespace GolfCompanion.Services
         public static Tee? GetSelectedTee()
         {
             var tee = _selectedTee;
-            _selectedTee = null; // Clear after getting to ensure single use
             return tee;
         }
 

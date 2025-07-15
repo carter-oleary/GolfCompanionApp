@@ -1,13 +1,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GolfCompanion.ViewModels" 
+             xmlns:models="clr-namespace:GolfCompanion.Models"
+             x:DataType="vm:ShotInputViewModel"
              x:Class="GolfCompanion.Views.ShotInputDialog">
     <VerticalStackLayout Padding="20" Spacing="16">
         <Label Text="Shot Input" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
         <Entry Placeholder="Shot Type (placeholder)" />
         <!-- Add more placeholder fields as needed -->
         <HorizontalStackLayout Spacing="16" HorizontalOptions="Center">
-            <Button Text="Save" x:Name="SaveButton" />
-            <Button Text="Cancel" x:Name="CancelButton" />
+            <Button Text="Save" x:Name="SaveButton" Command="{Binding AddShotCommand}"/>
+            <Button Text="Cancel" x:Name="CancelButton" Command="{Binding CancelShotCommand}"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage> 

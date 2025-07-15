@@ -1,20 +1,15 @@
 using System;
 using Microsoft.Maui.Controls;
+using GolfCompanion.ViewModels;
 
 namespace GolfCompanion.Views
 {
     public partial class ShotInputDialog : ContentPage
     {
-        public ShotInputDialog()
+        public ShotInputDialog(ShotInputViewModel vm)
         {
             InitializeComponent();
-            SaveButton.Clicked += async (s, e) => {
-                await DisplayAlert("Save", "Shot saved (placeholder)", "OK");
-                await Navigation.PopModalAsync();
-            };
-            CancelButton.Clicked += async (s, e) => {
-                await Navigation.PopModalAsync();
-            };
+            BindingContext = vm;
         }
     }
 } 

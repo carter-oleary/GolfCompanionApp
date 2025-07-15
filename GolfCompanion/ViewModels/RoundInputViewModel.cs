@@ -20,18 +20,25 @@ namespace GolfCompanion.ViewModels
         private readonly SharedGolfClasses.Tee? _selectedTee;
         private readonly int _courseId;
         private readonly string _gender = TeeSelectionService.GetGender();
+        private readonly ShotInputService _shotInputService;
         private readonly GolfDataService _golfDataService;
 
         public RoundInputViewModel()
         {
             _courseId = CourseSelectionService.GetSelectedCourse().CourseId;
             _golfDataService = new GolfDataService();
+            _shotInputService = new ShotInputService();
             _selectedTee = TeeSelectionService.GetSelectedTee();
             var tee = _golfDataService.GetTeeFromDatabaseAsync(_courseId, _gender, _selectedTee.Tee_Name).Result;
             if (tee == null) return;
             else
             {
-                holes = new ObservableCollection<Models.Hole>(_golfDataService.GetHolesFromDatabaseAsync(tee.TeeId).Result);
+                Holes = new ObservableCollection<Models.Hole>(_golfDataService.GetHolesFromDatabaseAsync(tee.TeeId).Result);
+            }
+            SelectedHole = ShotInputService.GetSelectedHole() ;
+            if (SelectedHole == null)
+            {
+                SelectedHole = Holes[0];
             }
         }
 
@@ -40,6 +47,8 @@ namespace GolfCompanion.ViewModels
         {
             // Open modal dialog for shot input (to be implemented)
             // On dialog result, add to SelectedHole.Shots
+            ShotInputService.SetSelectedHole(SelectedHole);
+            await Shell.Current.GoToAsync("//ShotInputDialog");
         }
 
         [RelayCommand]
@@ -47,6 +56,7 @@ namespace GolfCompanion.ViewModels
         {
             // Persist all shots and round to database (to be implemented)
             // Navigate back to search view
+            await Shell.Current.GoToAsync("//SearchView");
         }
     }
 

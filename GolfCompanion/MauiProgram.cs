@@ -29,11 +29,13 @@ public static class MauiProgram
 		builder.Services.AddSingleton<CourseDetailService>();
         builder.Services.AddSingleton<CourseSearchService>();
 		builder.Services.AddSingleton<TeeSelectionService>();
+		builder.Services.AddSingleton<ShotInputService>();
 
         // Register ViewModels
         builder.Services.AddTransient<SearchViewModel>();
 		builder.Services.AddTransient<TeeSelectionViewModel>();
 		builder.Services.AddTransient<RoundInputViewModel>();
+		builder.Services.AddTransient<ShotInputViewModel>();
 
         // Register Views
         builder.Services.AddTransient<SearchPage>();

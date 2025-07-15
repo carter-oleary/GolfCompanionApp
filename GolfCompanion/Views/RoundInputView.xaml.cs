@@ -12,15 +12,6 @@ namespace GolfCompanion.Views
             BindingContext = vm;
         }
 
-        private async void OnAddShotClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new ShotInputDialog());
-        }
-
-        private async void OnSaveRoundClicked(object sender, EventArgs e)
-        {
-            // Placeholder: Navigate back to SearchView
-            await Navigation.PopAsync();
-        }
+       
     }
 } 

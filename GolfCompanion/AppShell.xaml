@@ -21,4 +21,9 @@
         ContentTemplate="{DataTemplate views:RoundInputView}"
         Route="RoundInputView"/>
 
+    <ShellContent
+        Title="Shot Input"
+        ContentTemplate="{DataTemplate views:ShotInputDialog}"
+        Route="ShotInputDialog"/>
+
 </Shell>
