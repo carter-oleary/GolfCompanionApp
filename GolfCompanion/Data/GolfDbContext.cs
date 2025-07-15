@@ -62,6 +62,10 @@ namespace GolfCompanion.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Seed initial data
+            modelBuilder.Entity<User>().HasData(GetUser());
+            modelBuilder.Entity<Club>().HasData(GetClubs());
+
             // Configure relationships and constraints
             modelBuilder.Entity<Club>()
                 .HasOne(c => c.User)
@@ -124,9 +128,7 @@ namespace GolfCompanion.Data
                 .Property(s => s.Lie)
                 .HasConversion<string>();
 
-            // Seed initial data
-            modelBuilder.Entity<User>().HasData(GetUser());
-            modelBuilder.Entity<Club>().HasData(GetClubs());
+            
 
             base.OnModelCreating(modelBuilder);
 

@@ -22,16 +22,18 @@ public static class MauiProgram
 			});
 		builder.UseMauiApp<App>().UseMauiCommunityToolkit();
         // Register database context
-        builder.Services.AddDbContext<GolfDbContext>(options =>
-			options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}"));
+        builder.Services.AddDbContext<GolfDbContext>();
+        //builder.Services.AddDbContext<GolfDbContext>(options =>
+        //options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}"));
 
-		// Register services
-		builder.Services.AddSingleton<GolfDataService>();
+        // Register services
+        builder.Services.AddSingleton<GolfDataService>();
 		builder.Services.AddSingleton<CourseDetailService>();
         builder.Services.AddSingleton<CourseSearchService>();
 		builder.Services.AddSingleton<CourseSelectionService>();
         builder.Services.AddSingleton<TeeSelectionService>();
 		builder.Services.AddSingleton<ShotInputService>();
+		
 
         // Register ViewModels
         builder.Services.AddTransient<SearchViewModel>();
