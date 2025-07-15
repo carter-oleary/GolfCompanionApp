@@ -13,15 +13,15 @@ namespace GolfCompanion.Models
         
         [ForeignKey("Hole")]
         public int HoleId { get; set; }
-        public Hole Hole { get; set; }
+        public Hole? Hole { get; set; }
         
         [ForeignKey("Round")]
         public int RoundId { get; set; }
-        public Round Round { get; set; }
+        public Round? Round { get; set; }
         
         [ForeignKey("Club")]
         public int ClubId { get; set; }
-        public Club Club { get; set; }
+        public Club? Club { get; set; }
 
         public ShotType ShotType { get; set; }
         

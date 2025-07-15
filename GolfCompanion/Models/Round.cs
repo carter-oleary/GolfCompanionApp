@@ -10,11 +10,11 @@ namespace GolfCompanion.Models
         
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
         
         [ForeignKey("Tee")]
         public int TeeId { get; set; }
-        public Tee Tee { get; set; }
+        public Tee? Tee { get; set; }
         
         public double SG_Tee { get; set; }
         
