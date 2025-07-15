@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SharedGolfClasses;
 
 namespace GolfCompanion.Models
 {
@@ -21,7 +22,11 @@ namespace GolfCompanion.Models
         
         public int Length { get; set; }
         
+        public string DisplayText => $"Hole {HoleNumber}";
+
         // Navigation properties        
         public virtual ICollection<Shot> Shots { get; set; } = new List<Shot>();
+
+        
     }
 } 

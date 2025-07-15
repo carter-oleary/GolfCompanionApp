@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GolfCompanion.Services;
 using SharedGolfClasses;
 using System.Collections.ObjectModel;
 
@@ -23,9 +24,11 @@ namespace GolfCompanion.ViewModels
         private ObservableCollection<Tee> availableTees = new();
 
         private readonly GolfCourse _selectedCourse;
+        private readonly TeeSelectionService _selectedTeeService;
 
         public TeeSelectionViewModel(GolfCourse selectedCourse)
         {
+            _selectedTeeService = new TeeSelectionService();
             _selectedCourse = selectedCourse;
             CourseName = selectedCourse.CourseName ?? "Unknown Course";
             ClubName = selectedCourse.ClubName ?? "Unknown Club";
@@ -64,6 +67,8 @@ namespace GolfCompanion.ViewModels
         [RelayCommand]
         private async Task SelectTee(Tee selectedTee)
         {
+            TeeSelectionService.SetSelectedTee(selectedTee);
+            TeeSelectionService.SetGender(SelectedGender);
             // Store the selected tee and course for use in the main app
             // You can implement a service to store this selection
             await Shell.Current.DisplayAlert("Tee Selected", 
@@ -71,7 +76,7 @@ namespace GolfCompanion.ViewModels
                 "OK");
             
             // Close the dialog using absolute routing
-            await Shell.Current.GoToAsync("//SearchPage");
+            await Shell.Current.GoToAsync("//RoundInputView");
         }
 
         [RelayCommand]

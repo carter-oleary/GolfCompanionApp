@@ -145,6 +145,20 @@ namespace GolfCompanion.Services
             }
         }
 
+        public async Task<List<Models.Hole>> GetHolesFromDatabaseAsync(int teeId)
+        {
+            return await _context.Holes
+                .Where(h => h.TeeId == teeId)
+                .OrderBy(h => h.HoleNumber)
+                .ToListAsync();
+        }
+
+        public async Task<Models.Tee?> GetTeeFromDatabaseAsync(int courseId, string gender, string teeName)
+        {
+            return await _context.Tees
+                .FirstOrDefaultAsync(t => t.CourseId == courseId && t.Gender == gender && t.TeeName == teeName);
+        }
+
         public async Task<Course?> GetCourseFromDatabaseAsync(int courseId)
         {
             return await _context.Courses

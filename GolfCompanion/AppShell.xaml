@@ -16,4 +16,9 @@
         ContentTemplate="{DataTemplate views:TeeSelectionDialog}"
         Route="TeeSelectionDialog" />
 
+    <ShellContent
+        Title="Round Input"
+        ContentTemplate="{DataTemplate views:RoundInputView}"
+        Route="RoundInputView"/>
+
 </Shell>
