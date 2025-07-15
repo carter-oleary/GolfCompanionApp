@@ -23,7 +23,7 @@
             <Grid ColumnDefinitions="*,Auto">
                 <Entry x:Name="SearchEntry" 
                        Placeholder="Enter golf course name..."
-                       Text="{Binding SearchText}"
+                       Text="{Binding SearchTerm}"
                        Grid.Column="0"
                        Margin="0,0,10,0" />
                 <Button Text="Search" Style="{StaticResource ActionButton}"

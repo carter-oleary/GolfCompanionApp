@@ -5,12 +5,10 @@ namespace GolfCompanion.Views
 {
     public partial class SearchPage : ContentPage
     {
-        public SearchPage()
+        public SearchPage(SearchViewModel vm)
         {
             InitializeComponent();
-            var courseSearchService = new CourseSearchService();
-            var courseDetailService = new CourseDetailService();
-            BindingContext = new SearchViewModel(courseSearchService, courseDetailService);
+            BindingContext = vm;
         }
     }
 } 

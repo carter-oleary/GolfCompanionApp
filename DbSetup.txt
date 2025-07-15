@@ -1,0 +1,72 @@
+Golf Database
+
+Models
+	User
+		UserId: int (PK)
+		Email: string
+		FirstName: string
+		LastName: string
+		Handicap: double
+		
+	Club
+		ClubId: int (Pk)
+		UserId: int (Fk, User)
+			One user will have many clubs, each club has one user
+		ClubName: varchar(2)
+		ClubDistance: double
+		
+	Course
+		CourseId: int (Pk)
+		ClubName: string
+		CourseName: string
+		
+	Tee
+		TeeId: int (Pk)
+		CourseId: int (Fk, Course)
+			Each course can have multiple tees, each tee has one course
+		Gender: string
+		TeeName: string
+		CourseRating: double
+		SlopeRating: int
+		Par: int
+		
+	Round
+		RoundId: int (Pk)
+		UserId: int (Fk, User)
+			One user can have many rounds, each round has one user
+		TeeId: int (Fk, Tee)
+			One tee can have many rounds or no rounds, each tee has one course
+			The relevant course info can be gotten from the tee, or we can make a Fk for Course
+		SG_Tee: double
+		SG_App: double
+		SG_Short: double
+		SG_Putt: double
+		
+	Hole
+		HoleId: int (Pk)
+		TeeId: int (Fk, Tee)
+			Each Tee has 18 holes, each hole belongs to one tee
+		HoleNumber: int (1-18)
+			This represents the hole number for that specific Tee
+		Par: int
+		Length: int
+		
+	Shot
+		ShotId: int (Pk)
+		HoleId: int (Fk, Hole)
+			This I'm not sure about because technically all I need is the hole number (1-18)
+			Each hole will have many shots, each shot will belong to one hole
+		RoundId: int (Fk, Round)
+			Each round will have many shots, each shot belongs to one round
+		ClubId: int (Fk, Club)
+		ShotType: ShotType enum, string
+			Tee, Recovery, Layup, Approach, Short, Putt
+		Distance: int
+		Lie: string
+			Tee, Rough, Fairway, Sand, Green
+		Result: string
+			Short, Left, Right, Long, OnTarget
+		StrokesGained: double
+		
+		
+	

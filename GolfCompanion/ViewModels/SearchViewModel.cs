@@ -9,35 +9,36 @@ namespace GolfCompanion.ViewModels
 {
     public partial class SearchViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private string searchText = string.Empty;
+        private readonly CourseSearchService _courseSearchService;
+        private readonly CourseDetailService _courseDetailService;
+        private readonly CourseSelectionService _courseSelectionService;
+        private readonly GolfDataService _golfDataService;
 
         [ObservableProperty]
-        private ObservableCollection<GolfCourse> searchResults = new();
+        private string searchTerm = string.Empty;
 
         [ObservableProperty]
         private bool isSearching = false;
 
         [ObservableProperty]
+        private ObservableCollection<GolfCourse> searchResults = new();
+
+        [ObservableProperty]
         private string statusMessage = string.Empty;
 
-        private readonly CourseSearchService _courseSearchService;
-        private readonly CourseDetailService _courseDetailService;
-
-        public SearchViewModel(CourseSearchService courseSearchService, CourseDetailService courseDetailService)
+        public SearchViewModel()
         {
-            _courseSearchService = courseSearchService;
-            _courseDetailService = courseDetailService;
+            _courseSearchService = new CourseSearchService();
+            _courseDetailService = new CourseDetailService();
+            _courseSelectionService = new CourseSelectionService();
+            _golfDataService = new GolfDataService();
         }
 
         [RelayCommand]
-        private async Task Search()
+        private async Task SearchAsync()
         {
-            if (string.IsNullOrWhiteSpace(SearchText))
-            {
-                StatusMessage = "Please enter a course to search for";
+            if (string.IsNullOrWhiteSpace(SearchTerm))
                 return;
-            }
 
             IsSearching = true;
             StatusMessage = string.Empty;
@@ -45,20 +46,12 @@ namespace GolfCompanion.ViewModels
 
             try
             {
-                var courses = await _courseSearchService.SearchCoursesAsync(SearchText);
-
-                if (courses != null && courses.Any())
+                var results = await _courseSearchService.SearchCoursesAsync(SearchTerm);
+                foreach (var course in results)
                 {
-                    foreach (var course in courses)
-                    {
-                        SearchResults.Add(course);
-                    }
-                    StatusMessage = $"Found {courses.Count()} golf course(s)";
+                    SearchResults.Add(course);
                 }
-                else
-                {
-                    StatusMessage = "No golf courses found";
-                }
+                StatusMessage = $"Found {results.Count()} golf course(s)";
             }
             catch (Exception ex)
             {
@@ -71,19 +64,24 @@ namespace GolfCompanion.ViewModels
         }
 
         [RelayCommand]
-        private async Task SelectCourse(GolfCourse course)
+        private async Task SelectCourseAsync(GolfCourse course)
         {
+            if (course == null) return;
+
             try
             {
-                // Get detailed course information including tees
+                // Get detailed course information
                 var detailedCourse = await _courseDetailService.GetCourseDetailsAsync(course.CourseId);
                 
                 if (detailedCourse != null)
                 {
-                    // Store the course in the selection service
+                    // Save course and tees to local database
+                    await _golfDataService.SaveCourseAndTeesAsync(detailedCourse);
+                    
+                    // Store the selected course
                     CourseSelectionService.SetSelectedCourse(detailedCourse);
                     
-                    // Navigate to TeeSelectionDialog using absolute routing
+                    // Navigate to tee selection
                     await Shell.Current.GoToAsync("//TeeSelectionDialog");
                 }
                 else
@@ -93,7 +91,7 @@ namespace GolfCompanion.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Error loading course details: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Error", $"Failed to load course details: {ex.Message}", "OK");
             }
         }
     }

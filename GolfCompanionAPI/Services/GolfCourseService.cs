@@ -1,4 +1,5 @@
 ﻿using GolfCompanionAPI.Models;
+using GolfCompanionAPI.Services;
 using SharedGolfClasses;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -22,8 +23,6 @@ namespace GolfCompanionAPI.Services
             _httpClient.BaseAddress = new Uri(_settings.BaseUrl);
             _httpClient.DefaultRequestHeaders.Remove("Authorization"); // Just in case
             _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"Key {_settings.ApiKey}");
-            
-
         }
 
         public async Task<GolfCourse?> GetGolfCourseAsync(int? id) 
@@ -55,7 +54,9 @@ namespace GolfCompanionAPI.Services
                 {
                     var course = courseWrapper.Course;
                     Console.WriteLine($"Course Info: {course.ToString()}");
-                    return course.ToGolfCourse();
+                    var golfCourse = course.ToGolfCourse();
+                    
+                    return golfCourse;
                 }
                 else 
                 {
@@ -84,7 +85,7 @@ namespace GolfCompanionAPI.Services
 
             try
             {
-                var response = await _httpClient.GetAsync($"search?search_query={Uri.EscapeDataString(name)}");
+                var response = await _httpClient.GetAsync(query);
                 response.EnsureSuccessStatusCode();
                 
                 var jsonStr = await response.Content.ReadAsStringAsync();
@@ -114,7 +115,6 @@ namespace GolfCompanionAPI.Services
                 return new List<GolfCourse>();
             }
         }
-
     }
 
     // Wrapper class to match the JSON structure
