@@ -11,5 +11,6 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("SearchPage", typeof(SearchPage));
 		Routing.RegisterRoute("RoundInputView", typeof(RoundInputView));
 		Routing.RegisterRoute("ShotInputDialog", typeof(ShotInputDialog));
+		Routing.RegisterRoute("StartupPage", typeof(StartupPage));
     }
 }

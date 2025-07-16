@@ -11,6 +11,7 @@ namespace GolfCompanion.Services
     {
         private static int userId = 1; // Placeholder for user ID, replace with actual user management logic
         private static List<Club> clubs = new List<Club>();
+        private static Round round;
         private GolfDataService golfDataService;
 
         public RoundInputService(GolfDataService golfDataService)
@@ -33,6 +34,21 @@ namespace GolfCompanion.Services
         {
             // This method can be used to set the user ID, for example during login
             userId = id;
+        }
+
+        public static void SetRound(Round newRound)
+        {
+            if (newRound == null) throw new ArgumentNullException(nameof(newRound));
+            round = newRound;
+        }
+
+        public static Round GetRound()
+        {
+            if (round == null)
+            {
+                throw new InvalidOperationException("Round has not been set. Please set the round before retrieving it.");
+            }
+            return round;
         }
     }
 }

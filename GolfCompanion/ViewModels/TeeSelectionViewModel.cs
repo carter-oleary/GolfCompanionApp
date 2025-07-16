@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GolfCompanion.Models;
 using GolfCompanion.Services;
 using SharedGolfClasses;
 using System.Collections.ObjectModel;
@@ -21,7 +22,10 @@ namespace GolfCompanion.ViewModels
         private string selectedGender = string.Empty;
 
         [ObservableProperty]
-        private ObservableCollection<Tee> availableTees = new();
+        private ObservableCollection<SharedGolfClasses.Tee> availableTees = new();
+
+        [ObservableProperty]
+        private Round newRound;
 
         private readonly GolfCourse _selectedCourse;
         private readonly TeeSelectionService _selectedTeeService;
@@ -65,12 +69,11 @@ namespace GolfCompanion.ViewModels
         }
 
         [RelayCommand]
-        private async Task SelectTee(Tee selectedTee)
+        private async Task SelectTee(SharedGolfClasses.Tee selectedTee)
         {
             TeeSelectionService.SetSelectedTee(selectedTee);
             TeeSelectionService.SetGender(SelectedGender);
-            // Store the selected tee and course for use in the main app
-            // You can implement a service to store this selection
+            
             await Shell.Current.DisplayAlert("Tee Selected", 
                 $"Selected: {selectedTee.Tee_Name}\nCourse Rating: {selectedTee.Course_Rating}\nSlope Rating: {selectedTee.Slope_Rating}\nTotal Yards: {selectedTee.Total_Yards}", 
                 "OK");

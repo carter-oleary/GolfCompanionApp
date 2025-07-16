@@ -23,7 +23,7 @@ public static class MauiProgram
 		builder.UseMauiApp<App>().UseMauiCommunityToolkit();
         // Register database context
         builder.Services.AddDbContext<GolfDbContext>(options =>
-        options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}"));
+        options.UseSqlite("Data Source=E:\\GitHub\\GolfCompanionApp\\GolfCompanion\\GolfCompanion.db"));
 
         // Register services
         builder.Services.AddSingleton<GolfDataService>();
@@ -40,12 +40,15 @@ public static class MauiProgram
 		builder.Services.AddTransient<TeeSelectionViewModel>();
 		builder.Services.AddTransient<RoundInputViewModel>();
 		builder.Services.AddTransient<ShotInputViewModel>();
+		builder.Services.AddTransient<StartupPageViewModel>();
 
         // Register Views
         builder.Services.AddTransient<SearchPage>();
 		builder.Services.AddTransient<TeeSelectionDialog>();
 		builder.Services.AddTransient<RoundInputView>();
 		builder.Services.AddTransient<ShotInputDialog>();
+		builder.Services.AddTransient<StartupPage>();
+		
 
 
 
@@ -55,8 +58,9 @@ public static class MauiProgram
 		var app = builder.Build();
 
 		var loggerFactory = app.Services.GetService<ILoggerFactory>();
-        var logger = loggerFactory?.CreateLogger("Startup");
-		logger?.LogInformation($"DB Path: {Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}");
+		var logger = loggerFactory.CreateLogger("Startup");
+		logger.LogInformation($"DB Path: {Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}");
+
 
 
         return app;

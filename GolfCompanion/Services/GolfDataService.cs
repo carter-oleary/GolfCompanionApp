@@ -1,6 +1,7 @@
 using GolfCompanion.Data;
 using GolfCompanion.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using SharedGolfClasses;
 
 namespace GolfCompanion.Services
@@ -12,7 +13,14 @@ namespace GolfCompanion.Services
         public GolfDataService(GolfDbContext context)
         {
             _context = context;
-            
+        }
+
+        public async Task<int> GetNextRoundIdAsync()
+        {
+            // If there are no rounds, Max will return null, so use ?? 0
+            int maxId = await _context.Rounds.AnyAsync()
+                ? await _context.Rounds.MaxAsync(r => r.RoundId) : 0;
+            return maxId + 1;
         }
 
         public async Task SaveCourseAndTeesAsync(GolfCourse golfCourse)
@@ -149,8 +157,21 @@ namespace GolfCompanion.Services
         public async Task SaveRoundAsync(Round round)
         {
             if (round == null) throw new ArgumentNullException(nameof(round));
-            _context.Rounds.Add(round);
+            // Check if round already exists
+            var existingRound = await _context.Rounds
+                .FirstOrDefaultAsync(r => r.RoundId == round.RoundId);
+            if (existingRound == null)
+                _context.Rounds.Add(round);
+            else
+                _context.Rounds.Update(round);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Round>> GetRoundsFromDatabaseAsync(int userId)
+        {
+            return await _context.Rounds
+                .Where(r => r.UserId == userId)
+                .ToListAsync();
         }
 
         public async Task<List<Models.Hole>> GetHolesFromDatabaseAsync(int teeId)
@@ -186,7 +207,11 @@ namespace GolfCompanion.Services
         public async Task AddShotToDatabaseAsync(Shot shot)
         {
             if (shot == null) throw new ArgumentNullException(nameof(shot));
-            _context.Shots.Add(shot);
+            if(_context.Shots.FirstOrDefault(s => s.ShotId == shot.ShotId) != null)
+            {
+                _context.Shots.Update(shot);
+            }
+            else _context.Shots.Add(shot);
             await _context.SaveChangesAsync();
         }
         public async Task AddUserToDatabaseAsync(User user)
