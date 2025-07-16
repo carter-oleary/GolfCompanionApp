@@ -20,12 +20,17 @@ namespace GolfCompanion.ViewModels
         [ObservableProperty]
         private Models.Hole selectedHole;
 
+        private List<Shot> _shots = new List<Shot>();
+
         private readonly SharedGolfClasses.Tee? _selectedTee;
+        private Models.Tee? _tee;
         private readonly int _courseId;
         private readonly int userId = 1; // Placeholder for user ID, should be replaced with actual user context
         private readonly string _gender = TeeSelectionService.GetGender();
         private readonly ShotInputService _shotInputService;
         private readonly GolfDataService _golfDataService;
+
+
 
         public RoundInputViewModel(GolfDataService gds, ShotInputService sis)
         {
@@ -44,6 +49,8 @@ namespace GolfCompanion.ViewModels
             {
                 SelectedHole = Holes[0];
             }
+
+            
         }
 
         [RelayCommand]
@@ -52,16 +59,40 @@ namespace GolfCompanion.ViewModels
             // Open modal dialog for shot input (to be implemented)
             // On dialog result, add to SelectedHole.Shots
             ShotInputService.SetSelectedHole(SelectedHole);
+            ShotInputService.SetCurrentShotDistance();
             await Shell.Current.GoToAsync("//ShotInputDialog");
 
         }
 
+        
+
         [RelayCommand]
         private async Task SaveRound()
         {
+            _tee = await _golfDataService.GetTeeFromDatabaseAsync(_courseId, _gender, _selectedTee.Tee_Name);
             // Persist all shots and round to database (to be implemented)
+            foreach(var hole in Holes)
+            {
+                if(hole.Shots.Count == 0)
+                {
+                    await Shell.Current.DisplayAlert("Missing Shots", $"Please add shots for hole {hole.HoleNumber} before saving the round.", "OK");
+                    _shots.Clear();
+                    return;
+                }
+                _shots.AddRange(hole.Shots);
+            }
             // Navigate back to search view
-            
+            Round round = new Round
+            {
+                UserId = userId,
+                TeeId = _tee.TeeId, // Convert Shared tee to Models.Tee
+                Score = _shots.Count,
+                Shots = _shots
+            };
+            // Strokes gained logic to be added here
+
+            // Save the round to the database
+            await _golfDataService.SaveRoundAsync(round);
             await Shell.Current.GoToAsync("//SearchPage");
         }
 
