@@ -41,11 +41,12 @@ namespace GolfCompanion.ViewModels
             {
                 var roundsList = await _golfDataService.GetRoundsFromDatabaseAsync(_userId);
                 Rounds = new ObservableCollection<Round>(roundsList);
+                if (Rounds.Count == 0) await Shell.Current.DisplayAlert("Nada", "No Rounds Found", "Deep Sadness");
             }
             catch (Exception ex)
             {
                 // Handle exceptions (e.g., log error, show message to user)
-                Console.WriteLine($"Error loading rounds: {ex.Message}");
+                await Shell.Current.DisplayAlert("Error", $"Error loading rounds: {ex.Message}", "OK");
             }
 
         }

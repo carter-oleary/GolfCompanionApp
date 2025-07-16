@@ -15,14 +15,6 @@ namespace GolfCompanion.Services
             _context = context;
         }
 
-        public async Task<int> GetNextRoundIdAsync()
-        {
-            // If there are no rounds, Max will return null, so use ?? 0
-            int maxId = await _context.Rounds.AnyAsync()
-                ? await _context.Rounds.MaxAsync(r => r.RoundId) : 0;
-            return maxId + 1;
-        }
-
         public async Task SaveCourseAndTeesAsync(GolfCourse golfCourse)
         {
             try
@@ -157,6 +149,7 @@ namespace GolfCompanion.Services
         public async Task SaveRoundAsync(Round round)
         {
             if (round == null) throw new ArgumentNullException(nameof(round));
+            if (round.Score < 18) return;
             // Check if round already exists
             var existingRound = await _context.Rounds
                 .FirstOrDefaultAsync(r => r.RoundId == round.RoundId);
@@ -170,6 +163,10 @@ namespace GolfCompanion.Services
         public async Task<List<Round>> GetRoundsFromDatabaseAsync(int userId)
         {
             return await _context.Rounds
+                .Include(r => r.Tee)
+                    .ThenInclude(t => t.Course)
+                .Include(r => r.User)
+                .Include(r => r.Shots)
                 .Where(r => r.UserId == userId)
                 .ToListAsync();
         }
