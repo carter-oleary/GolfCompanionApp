@@ -183,6 +183,12 @@ namespace GolfCompanion.Services
                 .ToListAsync();
         }
 
+        public async Task AddShotToDatabaseAsync(Shot shot)
+        {
+            if (shot == null) throw new ArgumentNullException(nameof(shot));
+            _context.Shots.Add(shot);
+            await _context.SaveChangesAsync();
+        }
         public async Task AddUserToDatabaseAsync(User user)
         {
             if(user == null) throw new ArgumentNullException(nameof(user));

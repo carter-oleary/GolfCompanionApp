@@ -63,7 +63,6 @@ namespace GolfCompanion.ViewModels
             await Shell.Current.GoToAsync("//ShotInputDialog");
 
         }
-
         
 
         [RelayCommand]
@@ -79,6 +78,10 @@ namespace GolfCompanion.ViewModels
                     _shots.Clear();
                     return;
                 }
+                foreach(var shot in hole.Shots)
+                {
+                    await _golfDataService.AddShotToDatabaseAsync(shot);
+                }
                 _shots.AddRange(hole.Shots);
             }
             // Navigate back to search view
@@ -93,6 +96,7 @@ namespace GolfCompanion.ViewModels
 
             // Save the round to the database
             await _golfDataService.SaveRoundAsync(round);
+            await Shell.Current.DisplayAlert("Round Saved", $"You shot a {round.Score} for a total of {(round.Score - _tee.Par > 0 ? $"+{round.Score - _tee.Par}" : (round.Score - _tee.Par < 0 ? $"{round.Score - _tee.Par}" : "E"))}", "OK");
             await Shell.Current.GoToAsync("//SearchPage");
         }
 
