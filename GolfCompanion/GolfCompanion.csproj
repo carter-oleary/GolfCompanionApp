@@ -24,7 +24,7 @@
 		<ApplicationTitle>GolfCompanion</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.golfcompanion</ApplicationId>
+		<ApplicationId>golfcompanion</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

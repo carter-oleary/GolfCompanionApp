@@ -22,9 +22,10 @@ public static class MauiProgram
 			});
 		builder.UseMauiApp<App>().UseMauiCommunityToolkit();
         // Register database context
-        builder.Services.AddDbContext<GolfDbContext>();
-        //builder.Services.AddDbContext<GolfDbContext>(options =>
-        //options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}"));
+        builder.Services.AddDbContext<GolfDbContext>(options =>
+        options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}"));
+
+		Console.WriteLine($"DB Path: {Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}");
 
         // Register services
         builder.Services.AddSingleton<GolfDataService>();
@@ -53,7 +54,13 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
+		var app = builder.Build();
 
-		return builder.Build();
+		var loggerFactory = app.Services.GetService<ILoggerFactory>();
+        var logger = loggerFactory.CreateLogger("Startup");
+		logger.LogInformation($"DB Path: {Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}");
+
+
+        return app;
 	}
 }
