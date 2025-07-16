@@ -38,9 +38,9 @@ public static class MauiProgram
         // Register ViewModels
         builder.Services.AddTransient<SearchViewModel>();
 		builder.Services.AddTransient<TeeSelectionViewModel>();
-		builder.Services.AddTransient<RoundInputViewModel>();
+		builder.Services.AddSingleton<RoundInputViewModel>();
 		builder.Services.AddTransient<ShotInputViewModel>();
-		builder.Services.AddTransient<StartupPageViewModel>();
+		builder.Services.AddSingleton<StartupPageViewModel>();
 
         // Register Views
         builder.Services.AddTransient<SearchPage>();
@@ -57,12 +57,6 @@ public static class MauiProgram
 #endif
 		var app = builder.Build();
 
-		var loggerFactory = app.Services.GetService<ILoggerFactory>();
-		var logger = loggerFactory.CreateLogger("Startup");
-		logger.LogInformation($"DB Path: {Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}");
-
-
-
-        return app;
+		return app;
 	}
 }

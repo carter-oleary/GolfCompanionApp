@@ -51,13 +51,18 @@ namespace GolfCompanion.ViewModels
             {
                 SelectedHole = Holes[0];
             }
-            Round = new Round
+            if(Round == null)
             {
-                UserId = userId,
-                TeeId = _tee.TeeId,
-            };
-            _golfDataService.SaveRoundAsync(Round).Wait();
-            RoundInputService.SetRound(Round);
+                Round = new Round
+                {
+                    UserId = userId,
+                    User = _golfDataService.GetUserFromDatabaseAsync(userId).Result,
+                    TeeId = _tee.TeeId,
+                    Tee = _tee
+                };
+                RoundInputService.SetRound(Round);
+            }
+            
         }
 
         [RelayCommand]
@@ -75,8 +80,9 @@ namespace GolfCompanion.ViewModels
         [RelayCommand]
         private async Task SaveRound()
         {
-            // Persist all shots and round to database (to be implemented)
-            foreach(var hole in Holes)
+            
+            // Check to make sure each hole has shots input
+            foreach (var hole in Holes)
             {
                 if(hole.Shots.Count == 0)
                 {
@@ -87,22 +93,22 @@ namespace GolfCompanion.ViewModels
                 
                 _shots.AddRange(hole.Shots);
             }
-            // Navigate back to search view
-            
-            foreach(var hole in Holes)
+            // Set Round score and save to db
+            Round.Score = _shots.Count;
+            await _golfDataService.SaveRoundAsync(Round);
+
+            foreach (var hole in Holes)
             {
                 foreach (var shot in hole.Shots)
                 { 
+                    shot.RoundId = Round.RoundId;
                     await _golfDataService.AddShotToDatabaseAsync(shot);
                 }
             }
             
             // Strokes gained logic to be added here
-
-            // Save the round to the database
-            await _golfDataService.SaveRoundAsync(Round);
             await Shell.Current.DisplayAlert("Round Saved", $"You shot a {Round.Score} for a total of {(Round.Score - _tee.Par > 0 ? $"+{Round.Score - _tee.Par}" : (Round.Score - _tee.Par < 0 ? $"{round.Score - _tee.Par}" : "E"))}", "OK");
-            await Shell.Current.GoToAsync("//SearchPage");
+            await Shell.Current.GoToAsync("//StartupPage");
         }
 
     }

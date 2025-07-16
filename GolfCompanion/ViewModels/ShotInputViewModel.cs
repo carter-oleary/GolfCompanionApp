@@ -55,7 +55,11 @@ namespace GolfCompanion.ViewModels
             Lies = new ObservableCollection<Lie>(Enum.GetValues<Lie>());
             Results = new ObservableCollection<Result>(Enum.GetValues<Result>());
 
-            round = RoundInputService.GetRound();
+            if(round == null)
+            {
+                round = RoundInputService.GetRound();
+            }
+            
         }
 
         [RelayCommand]
@@ -63,7 +67,7 @@ namespace GolfCompanion.ViewModels
         {
             NewShot = new Shot
             {
-                RoundId = round.RoundId,
+                Round = round,
                 HoleId = SelectedHole.HoleId,
                 ClubId = SelectedClub.ClubId,
                 ShotType = SelectedShotType,

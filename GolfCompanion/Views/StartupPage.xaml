@@ -6,8 +6,8 @@
              x:Class="GolfCompanion.Views.StartupPage"
              x:DataType="vms:StartupPageViewModel"
              Title="StartupPage">
-    <VerticalStackLayout>
-        <Label Style="{StaticResource InfoLabel}">
+    <Grid RowDefinitions="Auto,*,150" ColumnDefinitions="*,Auto,Auto,*">
+        <Label Grid.ColumnSpan="4" Style="{StaticResource InfoLabel}">
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="Welcome "/>
@@ -17,12 +17,13 @@
                 
             </Label.FormattedText>
         </Label>
-        <CollectionView>
+        <CollectionView Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding Rounds}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Round">
                     <Border Style="{StaticResource ListBorder}">
                         <VerticalStackLayout Style="{StaticResource ListVSL}">
                             <Label Style="{StaticResource ListHeaderLabel}" Text="{Binding Tee.Course.ClubName}"/>
+                            <Label Style="{StaticResource ListHeaderLabel}" FontSize="14" Text="{Binding Tee.Course.CourseName}"/>
                             <Label Style="{StaticResource ListSubLabel}" Text="{Binding Score}"/>
                         </VerticalStackLayout>
 
@@ -33,9 +34,9 @@
             
         </CollectionView>
         
-        <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="10">
+        <HorizontalStackLayout Grid.Row="3" Grid.Column="1" HorizontalOptions="Center" Padding="10" Spacing="10">
             <Button Style="{StaticResource ActionButton}" Text="Input New Round" Command="{Binding AddNewRoundCommand}"/>
-            <Button Style="{StaticResource ActionButton}" Text="View Rounds" Command="{Binding LoadRoundsAsync}"/>
+            <Button Style="{StaticResource ActionButton}" Text="View Rounds" Command="{Binding LoadRoundsCommand}"/>
         </HorizontalStackLayout>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
