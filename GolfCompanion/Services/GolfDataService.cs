@@ -12,6 +12,7 @@ namespace GolfCompanion.Services
         public GolfDataService(GolfDbContext context)
         {
             _context = context;
+            
         }
 
         public async Task SaveCourseAndTeesAsync(GolfCourse golfCourse)
@@ -173,6 +174,38 @@ namespace GolfCompanion.Services
                 .Include(t => t.Holes)
                 .Where(t => t.CourseId == courseId && t.Gender == gender)
                 .ToListAsync();
+        }
+
+        public async Task AddUserToDatabaseAsync(User user)
+        {
+            if(user == null) throw new ArgumentNullException(nameof(user));
+            if (await _context.Users.AnyAsync(u => u.UserId == user.UserId))
+            {
+                // User already exists, update instead
+                _context.Users.Update(user);
+            }
+            else
+            {
+                // New user, add to database
+                _context.Users.Add(user);
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddClubToDatabaseAsync(Club club)
+        {
+            if (club == null) throw new ArgumentNullException(nameof(club));
+            if (await _context.Clubs.AnyAsync(c => c.ClubId == club.ClubId))
+            {
+                // Club already exists, update instead
+                _context.Clubs.Update(club);
+            }
+            else
+            {
+                // New club, add to database
+                _context.Clubs.Add(club);
+            }
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Club>> GetClubsFromDatabaseAsync(int userId)

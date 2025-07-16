@@ -7,7 +7,7 @@ namespace GolfCompanion.Data
     {
         public GolfDbContext(DbContextOptions<GolfDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            
         }
 
         public DbSet<User> Users { get; set; }
@@ -18,7 +18,7 @@ namespace GolfCompanion.Data
         public DbSet<Hole> Holes { get; set; }
         public DbSet<Shot> Shots { get; set; }
 
-        private User GetUser()
+        public User GetUser()
         {
             return new User
             {
@@ -30,7 +30,7 @@ namespace GolfCompanion.Data
             };
         }
 
-        private Club[] GetClubs()
+        public Club[] GetClubs()
         {
             return new Club[]
             {
@@ -53,15 +53,12 @@ namespace GolfCompanion.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // Configure the database connection string here if not set externally
-                optionsBuilder.UseSqlite("Data Source=golfcompanion.db");
-            }
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             // Seed initial data
             modelBuilder.Entity<User>().HasData(GetUser());
             modelBuilder.Entity<Club>().HasData(GetClubs());
