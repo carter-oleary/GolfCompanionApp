@@ -25,8 +25,6 @@ public static class MauiProgram
         builder.Services.AddDbContext<GolfDbContext>(options =>
         options.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}"));
 
-		Console.WriteLine($"DB Path: {Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}");
-
         // Register services
         builder.Services.AddSingleton<GolfDataService>();
 		builder.Services.AddSingleton<CourseDetailService>();
@@ -57,8 +55,8 @@ public static class MauiProgram
 		var app = builder.Build();
 
 		var loggerFactory = app.Services.GetService<ILoggerFactory>();
-        var logger = loggerFactory.CreateLogger("Startup");
-		logger.LogInformation($"DB Path: {Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}");
+        var logger = loggerFactory?.CreateLogger("Startup");
+		logger?.LogInformation($"DB Path: {Path.Combine(FileSystem.AppDataDirectory, "GolfCompanion.db")}");
 
 
         return app;

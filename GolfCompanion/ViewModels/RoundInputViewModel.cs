@@ -61,6 +61,7 @@ namespace GolfCompanion.ViewModels
         {
             // Persist all shots and round to database (to be implemented)
             // Navigate back to search view
+            
             await Shell.Current.GoToAsync("//SearchPage");
         }
 
