@@ -40,6 +40,8 @@ namespace GolfCompanion.ViewModels
         private ShotInputService _shotInputService;
         private RoundInputService _roundInputService;
 
+        private Round round;
+
         public ShotInputViewModel(ShotInputService sis, RoundInputService ris)
         {
             // Initialize the selected hole and new shot
@@ -52,6 +54,8 @@ namespace GolfCompanion.ViewModels
             ShotTypes = new ObservableCollection<ShotType>(Enum.GetValues<ShotType>());
             Lies = new ObservableCollection<Lie>(Enum.GetValues<Lie>());
             Results = new ObservableCollection<Result>(Enum.GetValues<Result>());
+
+            round = RoundInputService.GetRound();
         }
 
         [RelayCommand]
@@ -59,7 +63,9 @@ namespace GolfCompanion.ViewModels
         {
             NewShot = new Shot
             {
-                Club = SelectedClub,
+                RoundId = round.RoundId,
+                HoleId = SelectedHole.HoleId,
+                ClubId = SelectedClub.ClubId,
                 ShotType = SelectedShotType,
                 Lie = SelectedLie,
                 Result = SelectedResult,

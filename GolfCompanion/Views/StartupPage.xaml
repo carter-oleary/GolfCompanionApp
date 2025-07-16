@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:GolfCompanion.ViewModels"
+             xmlns:models="clr-namespace:GolfCompanion.Models"
+             x:Class="GolfCompanion.Views.StartupPage"
+             x:DataType="vms:StartupPageViewModel"
+             Title="StartupPage">
+    <VerticalStackLayout>
+        <Label Style="{StaticResource InfoLabel}">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Welcome "/>
+                    <Span Text="{Binding User.FirstName}" FontAttributes="Bold"/>
+                    <Span Text=" to Golf Companion!"/>
+                </FormattedString>
+                
+            </Label.FormattedText>
+        </Label>
+        <CollectionView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Round">
+                    <Border Style="{StaticResource ListBorder}">
+                        <VerticalStackLayout Style="{StaticResource ListVSL}">
+                            <Label Style="{StaticResource ListHeaderLabel}" Text="{Binding Tee.Course.ClubName}"/>
+                            <Label Style="{StaticResource ListSubLabel}" Text="{Binding Score}"/>
+                        </VerticalStackLayout>
+
+                    </Border>
+                </DataTemplate>
+                
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
+        
+        <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="10">
+            <Button Style="{StaticResource ActionButton}" Text="Input New Round" Command="{Binding AddNewRoundCommand}"/>
+            <Button Style="{StaticResource ActionButton}" Text="View Rounds" Command="{Binding LoadRoundsAsync}"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

@@ -9,8 +9,8 @@
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate views:SearchPage}"
-        Route="SearchPage" />
+        ContentTemplate="{DataTemplate views:StartupPage}"
+        Route="StartupPage" />
 
     <ShellContent
         Title="Tee Selection"
@@ -26,5 +26,10 @@
         Title="Shot Input"
         ContentTemplate="{DataTemplate views:ShotInputDialog}"
         Route="ShotInputDialog"/>
+
+    <ShellContent
+        Title="Search"
+        ContentTemplate="{DataTemplate views:SearchPage}"
+        Route="SearchPage"/>
 
 </Shell>
