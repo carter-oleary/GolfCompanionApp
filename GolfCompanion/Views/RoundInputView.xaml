@@ -18,11 +18,12 @@
         <CollectionView Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding SelectedHole.Shots}" HeightRequest="200">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Shot">
-                    <Frame Margin="4" Padding="8" BorderColor="Gray">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Display}" />
+                    <Border Style="{StaticResource ListBorder}">
+                        <VerticalStackLayout Style="{StaticResource ListVSL}">
+                            <Label Style="{StaticResource ListHeaderLabel}" Text="{Binding Distance}"/>
+                            <Label Text="{Binding Club.ClubName}" />
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

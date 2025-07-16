@@ -33,6 +33,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<CourseSelectionService>();
         builder.Services.AddSingleton<TeeSelectionService>();
 		builder.Services.AddSingleton<ShotInputService>();
+		builder.Services.AddSingleton<RoundInputService>();
 		
 
         // Register ViewModels

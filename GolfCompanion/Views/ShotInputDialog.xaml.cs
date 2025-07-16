@@ -5,7 +5,7 @@ using CommunityToolkit.Maui.Views;
 
 namespace GolfCompanion.Views
 {
-    public partial class ShotInputDialog : Popup
+    public partial class ShotInputDialog : ContentPage
     {
         public ShotInputDialog(ShotInputViewModel vm)
         {

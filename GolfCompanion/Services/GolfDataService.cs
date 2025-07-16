@@ -174,5 +174,18 @@ namespace GolfCompanion.Services
                 .Where(t => t.CourseId == courseId && t.Gender == gender)
                 .ToListAsync();
         }
+
+        public async Task<List<Club>> GetClubsFromDatabaseAsync(int userId)
+        {
+            return await _context.Clubs
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
+        }
+
+        public async Task<User?> GetUserFromDatabaseAsync(int userId)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId == userId);
+        }
     }
 } 

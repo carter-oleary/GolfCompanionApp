@@ -22,6 +22,7 @@ namespace GolfCompanion.ViewModels
 
         private readonly SharedGolfClasses.Tee? _selectedTee;
         private readonly int _courseId;
+        private readonly int userId = 1; // Placeholder for user ID, should be replaced with actual user context
         private readonly string _gender = TeeSelectionService.GetGender();
         private readonly ShotInputService _shotInputService;
         private readonly GolfDataService _golfDataService;
@@ -51,7 +52,7 @@ namespace GolfCompanion.ViewModels
             // Open modal dialog for shot input (to be implemented)
             // On dialog result, add to SelectedHole.Shots
             ShotInputService.SetSelectedHole(SelectedHole);
-            WeakReferenceMessenger.Default.Send(new ShowShotInputPopupMessage(SelectedHole));
+            await Shell.Current.GoToAsync("//ShotInputDialog");
 
         }
 
@@ -64,13 +65,6 @@ namespace GolfCompanion.ViewModels
         }
 
     }
-    public class ShowShotInputPopupMessage
-    {
-        public Models.Hole selectedHole { get; }
-        public ShowShotInputPopupMessage(Models.Hole selectedHole)
-        {
-            this.selectedHole = selectedHole;
-        }
-    }
+    
 
 } 

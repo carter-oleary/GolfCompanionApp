@@ -11,6 +11,7 @@ namespace GolfCompanion.Services
     {
         private static Hole? _selectedHole;
 
+
         public static void SetSelectedHole(Hole hole)
         {
             _selectedHole = hole;

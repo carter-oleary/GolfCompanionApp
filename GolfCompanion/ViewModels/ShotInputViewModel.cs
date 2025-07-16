@@ -15,7 +15,8 @@ namespace GolfCompanion.ViewModels
     {
         [ObservableProperty]
         private Hole selectedHole;
-
+        [ObservableProperty]
+        private int distance;
         [ObservableProperty]
         private Shot newShot;
         [ObservableProperty]
@@ -35,16 +36,34 @@ namespace GolfCompanion.ViewModels
         [ObservableProperty]
         private Result selectedResult;
 
-        public ShotInputViewModel()
+        private ShotInputService _shotInputService;
+        private RoundInputService _roundInputService;
+
+        public ShotInputViewModel(ShotInputService sis, RoundInputService ris)
         {
             // Initialize the selected hole and new shot
             SelectedHole = ShotInputService.GetSelectedHole() ?? new Hole();
-            
+            _shotInputService = sis;   
+            _roundInputService = ris;
+
+            Clubs = new ObservableCollection<Club>(RoundInputService.GetClubs());
+            Distance = SelectedHole.Length; // Default distance to hole length
+            ShotTypes = new ObservableCollection<ShotType>(Enum.GetValues<ShotType>());
+            Lies = new ObservableCollection<Lie>(Enum.GetValues<Lie>());
+            Results = new ObservableCollection<Result>(Enum.GetValues<Result>());
         }
 
         [RelayCommand]
         public async Task AddShotAsync()
         {
+            NewShot = new Shot
+            {
+                Club = SelectedClub,
+                ShotType = SelectedShotType,
+                Lie = SelectedLie,
+                Result = SelectedResult,
+                Distance = Distance  // Default distance, can be set later
+            };
             SelectedHole.Shots.Add(NewShot);
             await Shell.Current.GoToAsync("//RoundInputView");
         }

@@ -1,4 +1,4 @@
-<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:GolfCompanion.ViewModels" 
@@ -7,8 +7,22 @@
              x:Class="GolfCompanion.Views.ShotInputDialog">
     <VerticalStackLayout Padding="20" Spacing="16">
         <Label Text="Shot Input" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
-        <Entry Placeholder="Distance From Hole (yds)" />
-        <Picker Title="Club" ItemsSource="{Binding Clubs}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedClub}" />
+        <!-- Top Row of Hole Info Goes Here -->
+        <HorizontalStackLayout Padding="10" HorizontalOptions="Center">
+            <Label Style="{StaticResource InfoLabel}" Text="Hole: "/>
+            <Label Style="{StaticResource InfoLabel}" Text="{Binding SelectedHole.HoleNumber}" Margin="0,0,20,0"/>
+            <Label Style="{StaticResource InfoLabel}" Text="Length: "/>
+            <Label Style="{StaticResource InfoLabel}" Text="{Binding SelectedHole.Length}" Margin="0,0,20,0"/>
+            <Label Style="{StaticResource InfoLabel}" Text="Par "/>
+            <Label Style="{StaticResource InfoLabel}" Text="{Binding SelectedHole.Par}" Margin="0,0,20,0"/>
+            <Label Style="{StaticResource InfoLabel}" Text="Handicap: "/>
+            <Label Style="{StaticResource InfoLabel}" Text="{Binding SelectedHole.Handicap}" Margin="0,0,20,0"/>
+        </HorizontalStackLayout>
+        <Grid ColumnDefinitions="Auto,*">
+            <Label VerticalOptions="Center" Text="Distance" Padding="0,0,10,0"/>
+            <Entry Grid.Column="1" Placeholder="Distance From Hole (yds)" Text="{Binding Distance, Mode=TwoWay}"/>
+        </Grid>
+        <Picker Title="Club" ItemsSource="{Binding Clubs}" ItemDisplayBinding="{Binding ClubName}" SelectedItem="{Binding SelectedClub}" />
         <Picker Title="Shot Type" ItemsSource="{Binding ShotTypes}"/>
         <Picker Title="Lie" ItemsSource="{Binding Lies}"/>
         <Picker Title="Result" ItemsSource="{Binding Results}"/>
@@ -18,4 +32,4 @@
             <Button Text="Cancel" Style="{StaticResource ActionButton}" x:Name="CancelButton" Command="{Binding CancelShotCommand}"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
-</toolkit:Popup> 
+</ContentPage> 
