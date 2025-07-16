@@ -146,6 +146,13 @@ namespace GolfCompanion.Services
             }
         }
 
+        public async Task SaveRoundAsync(Round round)
+        {
+            if (round == null) throw new ArgumentNullException(nameof(round));
+            _context.Rounds.Add(round);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<Models.Hole>> GetHolesFromDatabaseAsync(int teeId)
         {
             return await _context.Holes

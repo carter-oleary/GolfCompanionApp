@@ -14,8 +14,8 @@ namespace GolfCompanion.Models
         
         [ForeignKey("Tee")]
         public int TeeId { get; set; }
-        public Tee? Tee { get; set; }
-        
+        public Tee? Tee { get; set; }       
+        public int Score { get; set; }
         public double SG_Tee { get; set; }
         
         public double SG_App { get; set; }

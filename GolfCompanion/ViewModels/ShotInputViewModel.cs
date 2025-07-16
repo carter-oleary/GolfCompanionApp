@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GolfCompanion.Models;
 using GolfCompanion.Services;
 using System;
@@ -47,7 +48,7 @@ namespace GolfCompanion.ViewModels
             _roundInputService = ris;
 
             Clubs = new ObservableCollection<Club>(RoundInputService.GetClubs());
-            Distance = SelectedHole.Length; // Default distance to hole length
+            Distance = ShotInputService.GetCurrentShotDistance(); 
             ShotTypes = new ObservableCollection<ShotType>(Enum.GetValues<ShotType>());
             Lies = new ObservableCollection<Lie>(Enum.GetValues<Lie>());
             Results = new ObservableCollection<Result>(Enum.GetValues<Result>());
@@ -64,7 +65,9 @@ namespace GolfCompanion.ViewModels
                 Result = SelectedResult,
                 Distance = Distance  // Default distance, can be set later
             };
+            
             SelectedHole.Shots.Add(NewShot);
+
             await Shell.Current.GoToAsync("//RoundInputView");
         }
 
@@ -74,4 +77,6 @@ namespace GolfCompanion.ViewModels
             await Shell.Current.GoToAsync("//RoundInputView");
         }
     }
+
+    
 }
